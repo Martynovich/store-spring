@@ -6,18 +6,18 @@ import com.andersen.domain.Cart;
 
 public interface CartDao {
 
-	public void persist(Cart entity);
+	void persist(Cart entity);
 
-	public Cart find(int id);
+	Cart find(int id);
 
-	public List<Cart> findAll();
+	List<Cart> findAll();
 
-	public void update(Cart entity);
+	void update(Cart entity);
 
-	public void deleteById(int id);
+	void deleteById(int id);
 
-	public void delete(Cart entity);
+	void delete(Cart entity);
 
-	public void deleteAll();
+	void deleteAll();
 
 }

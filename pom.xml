@@ -2,9 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.andersen</groupId>
-	<artifactId>storeSpring</artifactId>
+	<artifactId>storeServlet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>storeSpring</name>
+	<packaging>war</packaging>
+	<name>storeServlet</name>
 	<repositories>
 		<repository>
 			<id>my-repo1</id>
@@ -58,5 +59,23 @@
 			<artifactId>spring-orm</artifactId>
 			<version>4.3.5.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

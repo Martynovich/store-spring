@@ -16,46 +16,45 @@ import com.andersen.domain.Cart;
 public class CartDaoImpl implements CartDao {
 
 	private static final Logger logger = Logger.getLogger(CartDaoImpl.class);
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	public CartDaoImpl(){
 	}
 	
-	private Session getcurrentSession() {
+	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
 
 	@Transactional
 	public void persist(Cart entity) {
-		getcurrentSession().save(entity);
+		getCurrentSession().save(entity);
 	}
 
 	@Transactional
 	public Cart find(int id) {
-		return getcurrentSession().get(Cart.class, id);
+		return getCurrentSession().get(Cart.class, id);
 	}
 
 	@Transactional
-	@SuppressWarnings("unchecked")
 	public List<Cart> findAll() {
-		return getcurrentSession().createCriteria(Cart.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+		return getCurrentSession().createCriteria(Cart.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 	}
 
 	@Transactional
 	public void update(Cart entity) {
-		getcurrentSession().update(entity);
+		getCurrentSession().update(entity);
 	}
 
 	@Transactional
 	public void delete(Cart entity) {
-		getcurrentSession().delete(entity);
+		getCurrentSession().delete(entity);
 	}
 
 	@Transactional
 	public void deleteById(int id) {
-		getcurrentSession().delete(this.find(id));
+		getCurrentSession().delete(this.find(id));
 	}
 
 	@Transactional

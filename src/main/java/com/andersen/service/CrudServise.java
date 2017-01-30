@@ -6,17 +6,17 @@ import com.andersen.domain.Client;
 
 public interface CrudServise<T> {
 	
-	public void create(T t);
+	void create(T t);
 	
-	public T findById(int id);
+	T findById(int id);
 	
-	public List<T> findAll();
+	List<T> findAll();
 	
-	public void update(T t);
+	void update(T t);
 	
-	public void delete(T t);
+	void delete(T t);
 	
-	public void deleteById(int id);
+	void deleteById(int id);
 	
-	public void deleteAll();
+	void deleteAll();
 }

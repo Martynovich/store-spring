@@ -22,7 +22,7 @@ public class App {
 
 	private static final Logger logger = Logger.getLogger(App.class);
 
-	private CLICrudService tableServise;
+	private CLICrudService tableService;
 	private String userInput;
 	private String tableName;
 	private String currentSelecting = "table";
@@ -69,15 +69,15 @@ public class App {
 		}
 		switch (rawNumber) {
 		case 1:
-			tableServise = cliClientService;
+			tableService = cliClientService;
 			tableName = "client";
 			break;
 		case 2:
-			tableServise = cliProductService;
+			tableService = cliProductService;
 			tableName = "product";
 			break;
 		case 3:
-			tableServise = cliCartService ;
+			tableService = cliCartService ;
 			tableName = "cart";
 			break;
 		default:
@@ -102,22 +102,22 @@ public class App {
 		}
 		switch (rawNumber) {
 		case 1:
-			tableServise.create();
+			tableService.create();
 			break;
 		case 2:
-			tableServise.findById();
+			tableService.findById();
 			break;
 		case 3:
-			tableServise.findAll();
+			tableService.findAll();
 			break;
 		case 4:
-			tableServise.update();
+			tableService.update();
 			break;
 		case 5:
-			tableServise.deleteById();
+			tableService.deleteById();
 			break;
 		case 6:
-			tableServise.deleteAll();
+			tableService.deleteAll();
 			break;
 		default:
 			System.exit(0);
@@ -137,30 +137,4 @@ public class App {
 		}
 		return Integer.parseInt(userInput);
 	}
-
-	public CLICrudService getCliClientService() {
-		return cliClientService;
-	}
-
-	public void setCliClientService(CLIClientService cliClientService) {
-		this.cliClientService = cliClientService;
-	}
-
-	public CLICrudService getCliProductService() {
-		return cliProductService;
-	}
-
-	public void setCliProductService(CLIProductService cliProductService) {
-		this.cliProductService = cliProductService;
-	}
-
-	public CLICrudService getCliCartService() {
-		return cliCartService;
-	}
-
-	public void setCliCartService(CLICartService cliCartService) {
-		this.cliCartService = cliCartService;
-	}
-	
-	
 }

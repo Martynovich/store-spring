@@ -19,20 +19,12 @@ public class Client implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column
-	@GeneratedValue(generator = "client_increment")
-	@GenericGenerator(name = "client_increment", strategy = "increment")
 	private int id;
 
-	@Column(unique = true, nullable = false)
 	private String login;
 
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<Cart> carts;
 
-	//Need for Hibernate.
 	public Client() {
 	}
 
@@ -40,6 +32,10 @@ public class Client implements Serializable {
 		this.login = login;
 	}
 
+	@Id
+	@Column
+	@GeneratedValue(generator = "client_increment")
+	@GenericGenerator(name = "client_increment", strategy = "increment")
 	public int getId() {
 		return id;
 	}
@@ -48,6 +44,7 @@ public class Client implements Serializable {
 		this.id = id;
 	}
 
+	@Column(unique = true, nullable = false, length = 1)
 	public String getLogin() {
 		return login;
 	}
@@ -56,6 +53,8 @@ public class Client implements Serializable {
 		this.login = name;
 	}
 
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Set<Cart> getCarts() {
 		return carts;
 	}

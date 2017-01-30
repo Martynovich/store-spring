@@ -25,7 +25,7 @@ public class CLIClientService implements CLICrudService {
 
 	public void create() {
 		logger.info("Start creating client.");
-		logger.info("Enter clientname.");
+		logger.info("Enter client name.");
 		logger.info("For exit enter - exit.");
 		try {
 			userInput = reader.readLine();
@@ -118,7 +118,7 @@ public class CLIClientService implements CLICrudService {
 					continue;
 				}
 			} catch (NumberFormatException e) {
-				logger.error("Incorect input. Need to enter number.");
+				logger.error("Incorrect input. Need to enter number.");
 				logger.info("Incorrect input. Please enter number");
 				continue;
 			} catch (IOException e) {
@@ -128,13 +128,4 @@ public class CLIClientService implements CLICrudService {
 		}
 		return client;
 	}
-
-	public ClientService getClientServise() {
-		return clientServise;
-	}
-
-	public void setClientServise(ClientService clientServise) {
-		this.clientServise = clientServise;
-	}
-
 }

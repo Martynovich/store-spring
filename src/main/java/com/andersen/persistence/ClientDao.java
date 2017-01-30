@@ -6,18 +6,18 @@ import com.andersen.domain.Client;
 
 public interface ClientDao {
 
-	public void persist(Client entity);
+	void persist(Client entity);
 
-	public Client find(int id);
+	Client find(int id);
 
-	public List<Client> findAll();
+	List<Client> findAll();
 
-	public void update(Client entity);
+	void update(Client entity);
 
-	public void deleteById(int id);
+	void deleteById(int id);
 
-	public void delete(Client entity);
+	void delete(Client entity);
 
-	public void deleteAll();
+	void deleteAll();
 
 }

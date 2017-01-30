@@ -268,30 +268,4 @@ public class CLICartService implements CLICrudService {
 		}
 		return products;
 	}
-
-	public CartService getCartService() {
-		return cartService;
-	}
-
-	public void setCartService(CartService cartService) {
-		this.cartService = cartService;
-	}
-
-	public CLIClientService getCliClientService() {
-		return cliClientService;
-	}
-
-	public void setCliClientService(CLIClientService cliClientService) {
-		this.cliClientService = cliClientService;
-	}
-
-	public CLIProductService getCliProductService() {
-		return cliProductService;
-	}
-
-	public void setCliProductService(CLIProductService cliProductService) {
-		this.cliProductService = cliProductService;
-	}
-	
-	
 }

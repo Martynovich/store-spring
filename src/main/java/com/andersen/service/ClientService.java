@@ -55,13 +55,4 @@ public class ClientService implements CrudServise<Client> {
 		logger.debug("ClientServise deleteAll");
 		clientDao.deleteAll();
 	}
-
-	public ClientDao getClientDao() {
-		return clientDao;
-	}
-
-	public void setClientDao(ClientDaoImpl clientDao) {
-		this.clientDao = clientDao;
-	}
-	
 }

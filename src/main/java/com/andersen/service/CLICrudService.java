@@ -2,16 +2,16 @@ package com.andersen.service;
 
 public interface CLICrudService {
 	
-	public void create();
+	void create();
 	
-	public void findById();
+	void findById();
 	
-	public void findAll();
+	void findAll();
 	
-	public void update();
+	void update();
 	
-	public void deleteById();
+	void deleteById();
 	
-	public void deleteAll();
+	void deleteAll();
 
 }

@@ -53,15 +53,4 @@ public class ProductService implements CrudServise<Product> {
 	public void deleteAll() {
 		productDao.deleteAll();
 	}
-
-	public ProductDao getProductDao() {
-		return productDao;
-	}
-
-	public void setProductDao(ProductDaoImpl productDao) {
-		this.productDao = productDao;
-	}
-	
-	
-
 }

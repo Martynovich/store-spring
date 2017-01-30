@@ -50,12 +50,4 @@ public class CartService implements CrudServise<Cart> {
 	public void deleteAll() {
 		cartDao.deleteAll();
 	}
-
-	public CartDao getCartDao() {
-		return cartDao;
-	}
-
-	public void setCartDao(CartDaoImpl cartDao) {
-		this.cartDao = cartDao;
-	}
 }

@@ -160,14 +160,4 @@ public class CLIProductService implements CLICrudService {
 		}
 		return product;
 	}
-
-	public ProductService getProductService() {
-		return productService;
-	}
-
-	public void setProductService(ProductService productService) {
-		this.productService = productService;
-	}
-	
-	
 }

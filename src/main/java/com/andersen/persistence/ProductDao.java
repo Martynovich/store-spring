@@ -6,18 +6,18 @@ import com.andersen.domain.Product;
 
 public interface ProductDao {
 
-	public void persist(Product entity);
+	void persist(Product entity);
 
-	public Product find(int id);
+	Product find(int id);
 
-	public List<Product> findAll();
+	List<Product> findAll();
 
-	public void update(Product entity);
+	void update(Product entity);
 
-	public void deleteById(int id);
+	void deleteById(int id);
 
-	public void delete(Product entity);
+	void delete(Product entity);
 
-	public void deleteAll();
+	void deleteAll();
 
 }

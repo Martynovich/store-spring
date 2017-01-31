@@ -1,8 +1,8 @@
 package com.andersen.controllers;
 
-import com.andersen.domain.Client;
+import com.andersen.domain.Cart;
 import com.andersen.domain.Product;
-import com.andersen.service.ClientService;
+import com.andersen.service.CartService;
 import com.andersen.service.ProductService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -15,16 +15,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class CreateCartServlet extends HttpServlet {
+public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ApplicationContext context = new ClassPathXmlApplicationContext("store-spring.xml");
-        ClientService clientService = (ClientService)context.getBean("clientService");
+        CartService cartService = (CartService)context.getBean("cartService");
         ProductService productService = (ProductService)context.getBean("productService");
-        Integer clientId = Integer.parseInt(req.getParameter("clientIdToCr"));
-        List<Client> clients = clientService.findAll();
         List<Product> products = productService.findAll();
-        boolean isClientExist = false;
+        Integer cartId;
         PrintWriter out = resp.getWriter();
         String page = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
@@ -59,21 +57,33 @@ public class CreateCartServlet extends HttpServlet {
                 "        </div>\n" +
                 "    </div>\n" +
                 "</div>\n";
-        for (Client c : clients) {
-            if (c.getId() == clientId) {
-                isClientExist = true;
-            }
-        }
-        if(!isClientExist) {
-            page += "</body>\n" +
+        try {
+            cartId = Integer.parseInt(req.getParameter("cartIdToUpdate"));
+        } catch (Exception e ) {
+            page += "</br><p>Incorrect input.Please enter number.</p>";
+            page +="</body>\n" +
                     "</html>";
             out.println(page);
-            out.println("</br>");
-            out.println("</br>");
-            out.println("Client with this id does not exist.");
             return;
         }
-        page +=  "<form  id=\"crCart\" name=\"createOrder\" method=\"post\" action=\"/newCart\">\n" +
+        Cart cart = cartService.findById(cartId);
+        if(cart == null) {
+            page += "</br><p>Cart with this id does not exist..</p>";
+            page +="</body>\n" +
+                    "</html>";
+            out.println(page);
+            return;
+        }
+        StringBuilder cartProductsStringBuilder = new StringBuilder();
+        for(Product p : cart.getProducts()) {
+            cartProductsStringBuilder.append(p.getProductName());
+            cartProductsStringBuilder.append(",");
+        }
+        String cartProductsString = cartProductsStringBuilder.toString();
+        page +=  "<form  id=\"upCart\" name=\"UpdateOrder\" method=\"post\" action=\"/updatedCart\">\n" +
+                "</br>\n" +
+                "<p>Enter new client id. Current client id - " + cart.getClient().getId() + ". For hold current client, enter current client id.</p>\n" +
+                "New client id:<input type=\"text\" name=\"newClientId\">\n" +
                 "</br>\n" +
                 "</br>\n" +
                 "    Select product:<br>\n" +
@@ -82,17 +92,23 @@ public class CreateCartServlet extends HttpServlet {
             page = page + "<option value=\"" + p.getProductName() +"\">" + p.getProductName() + " price:" + p.getProdutPrice() + "</option>\n";
         }
 
+
+
         page += " </select>\n" +
                 "    <input type=\"button\" value=\"add\" onclick=\"addClick ()\"/>\n" +
-                "    <input type=\"submit\" value=\"Create cart\" onclick=\"createCart ()\">\n" +
-                "\t<input type=\"hidden\" name=\"allProducts\" value=\"\"/>\n" +
-                "\t<input type=\"hidden\" name=\"clientId\" value=\"" + clientId + "\"/>\n" +
+                "    <input type=\"submit\" value=\"Update cart\" onclick=\"updateCart ()\">\n" +
+                "\t<input type=\"hidden\" name=\"allProducts\" value=\"" + cartProductsString + "\"/>\n" +
+                "\t<input type=\"hidden\" name=\"cartId\" value=\"" + cart.getId() + "\"/>\n" +
                 "</form>\n" +
-                "<div id=\"products\"></div>\n" +
+                "<div id=\"products\">";
+        for(Product p : cart.getProducts()){
+            page += "<div class=\""+ p.getProductName() +"\">" + p.getProductName() +"<input value=\"del\" onclick=\"delProd (this)\" type=\"button\"></div>";
+        }
+
+        page += "</div>\n" +
                 "<script type=\"text/javascript\">\n" +
                 "    \tvar product = document.getElementsByName('product')[0].value;\n" +
                 "    \tvar products = document.getElementsByName('allProducts')[0];\n" +
-                "    \tproducts.value = \"\";\n" +
                 "    \tvar delBtn = \"<input type=\\\"button\\\" value=\\\"del\\\" onclick=\\\"delProd (this)\\\"/>\";\n" +
                 "    \tfunction selectProduct (p) {\n" +
                 "    \t\tproduct = p;\n" +
@@ -112,8 +128,8 @@ public class CreateCartServlet extends HttpServlet {
                 "    \t\tbtn.parentNode.remove();\n" +
                 "\n" +
                 "    \t}\n" +
-                "    \tfunction createCart () {\n" +
-                "    \t\tdocument.getElementById('crCart').submit();\n" +
+                "    \tfunction updateCart () {\n" +
+                "    \t\tdocument.getElementById('upCart').submit();\n" +
                 "    \t}\n" +
                 "    </script>\n" +
                 "</body>\n" +

@@ -48,7 +48,7 @@ public class Cart implements Serializable {
 		dateOfCreation = new Date();
 	}
 	
-	public int geId() {
+	public int getId() {
 		return id;
 	}
 	
@@ -79,5 +79,7 @@ public class Cart implements Serializable {
 	public void setDateOfCreation(Date dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
 	}
+
+
 
 }

@@ -45,7 +45,7 @@ public class ProductServlet extends HttpServlet {
                 "    </div>\n" +
                 "    </div>\n" +
                 "    </br>\n" +
-                "    <p>Client page</p>\n" +
+                "    <p>Product page</p>\n" +
                 "    <hr>\n" +
                 "    <div id=\"create\">\n" +
                 "    \t<p>Create product</p>\n" +

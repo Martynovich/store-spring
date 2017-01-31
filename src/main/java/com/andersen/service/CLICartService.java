@@ -62,7 +62,7 @@ public class CLICartService implements CLICrudService {
 	public void findById() {
 		logger.info("Start finding by id cart.");
 		Cart cart = cartIdInput();
-		logger.info("Cart id - " + cart.geId() + " client id - " + cart.getClient().getId() + " order date - "
+		logger.info("Cart id - " + cart.getId() + " client id - " + cart.getClient().getId() + " order date - "
 				+ cart.getDateOfCreation());
 		List<Product> products = cart.getProducts();
 		logger.info("Products in cart.");
@@ -80,7 +80,7 @@ public class CLICartService implements CLICrudService {
 			logger.info("No carts.");
 		}
 		for (Cart cart : carts) {
-			logger.info("Cart id - " + cart.geId() + " client id - " + cart.getClient().getId() + " order date - "
+			logger.info("Cart id - " + cart.getId() + " client id - " + cart.getClient().getId() + " order date - "
 					+ cart.getDateOfCreation());
 			List<Product> products = cart.getProducts();
 			logger.info("Products in cart.");

@@ -6,6 +6,7 @@ import com.andersen.domain.Product;
 import com.andersen.service.CartService;
 import com.andersen.service.ClientService;
 import com.andersen.service.ProductService;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -20,8 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UpdatedCartServlet extends HttpServlet {
+
+    private static final Logger logger = Logger.getLogger(UpdatedCartServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Start UpdatedCartServlet doPost.");
         ApplicationContext context = new ClassPathXmlApplicationContext("store-spring.xml");
         ClientService clientService = (ClientService) context.getBean("clientService");
         ProductService productService = (ProductService)context.getBean("productService");
@@ -31,60 +36,22 @@ public class UpdatedCartServlet extends HttpServlet {
         String selectedProducts = req.getParameter("allProducts");
         List<Product> allProducts = productService.findAll();
         PrintWriter out = resp.getWriter();
-        String page = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Clients</title>\n" +
-                "    <style type=\"text/css\">\n" +
-                "        .line {\n" +
-                "            float: left;\n" +
-                "            margin-left: 2px;\n" +
-                "            text-align: center;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "    <div id=\"tables\">\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkClient\" method=\"get\" action=\"/client\">\n" +
-                "                <input type=\"submit\" value=\"Client\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkProduct\" method=\"get\" action=\"/product\">\n" +
-                "                <input type=\"submit\" value=\"Product\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkCart\" method=\"get\" action=\"/cart\">\n" +
-                "                <input type=\"submit\" value=\"Cart\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "    </div>\n" +
-                "    </br>\n";
+        String page = TextHolder.TABLE_SELECTION + "</br>\n";
         try {
             newClientId = Integer.parseInt(req.getParameter("newClientId"));
         } catch (Exception e ) {
-            page += "</br><p>Incorrect client id input.Please enter number.</p>";
-            page +="</body>\n" +
-                    "</html>";
+            page += "</br><p>Incorrect client id input.Please enter number.</p>" + TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
         Client newOwner = clientService.findById(newClientId);
         if(newOwner == null) {
-            page += "</br><p>Client with this id does not exist.</p>";
-            page += "</body>\n" +
-                    "</html>";
+            page += "</br><p>Client with this id does not exist.</p>" + TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
         if(selectedProducts.equals(""))  {
-            page += "<p>Can't create cart without products.</p>";
-            page += "</body>\n" +
-                    "</html>";
+            page += "<p>Can't create cart without products.</p>" + TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
@@ -101,9 +68,7 @@ public class UpdatedCartServlet extends HttpServlet {
         }
         cart.setProducts(cartProducts);
         cartService.update(cart);
-        page += "<p>Cart is updated.</p>";
-        page += "</body>\n" +
-                "</html>";
+        page += "<p>Cart is updated.</p>" + TextHolder.END_OF_PAGE;
         out.println(page);
     }
 }

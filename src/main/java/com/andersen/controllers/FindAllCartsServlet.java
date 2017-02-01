@@ -3,6 +3,7 @@ package com.andersen.controllers;
 import com.andersen.domain.Cart;
 import com.andersen.domain.Product;
 import com.andersen.service.CartService;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -15,50 +16,20 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class FindAllCartsServlet extends HttpServlet{
+
+    private static final Logger logger = Logger.getLogger(FindAllCartsServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Start FindAllCartsServlet doPost.");
         ApplicationContext context = new ClassPathXmlApplicationContext("store-spring.xml");
         CartService service = (CartService)context.getBean("cartService");
         List<Cart> carts = service.findAll();
         PrintWriter out = resp.getWriter();
-        String page = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Clients</title>\n" +
-                "    <style type=\"text/css\">\n" +
-                "        .line {\n" +
-                "            float: left;\n" +
-                "            margin-left: 2px;\n" +
-                "            text-align: center;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "    <div id=\"tables\">\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkClient\" method=\"get\" action=\"/client\">\n" +
-                "                <input type=\"submit\" value=\"Client\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkProduct\" method=\"get\" action=\"/product\">\n" +
-                "                <input type=\"submit\" value=\"Product\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkCart\" method=\"get\" action=\"/cart\">\n" +
-                "                <input type=\"submit\" value=\"Cart\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "    </div>\n" +
-                "    </br>\n" +
-                "    <hr>\n";
+        String page = TextHolder.TABLE_SELECTION + "</br>\n<hr>\n";
         if(carts.isEmpty()) {
             page += "<p>No current carts.</p>";
-            page += "</body>\n" +
-                    "</html>";
+            page += TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
@@ -76,8 +47,7 @@ public class FindAllCartsServlet extends HttpServlet{
             }
             page += "<hr>";
         }
-        page += "</body>\n" +
-                "</html>";
+        page += TextHolder.END_OF_PAGE;
         out.println(page);
     }
 }

@@ -4,6 +4,7 @@ import com.andersen.domain.Client;
 import com.andersen.domain.Product;
 import com.andersen.service.ClientService;
 import com.andersen.service.ProductService;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,8 +17,12 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class CreateCartServlet extends HttpServlet {
+
+    private static final Logger logger = Logger.getLogger(CreateCartServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Start CreateCartServlet doPost.");
         ApplicationContext context = new ClassPathXmlApplicationContext("store-spring.xml");
         ClientService clientService = (ClientService)context.getBean("clientService");
         ProductService productService = (ProductService)context.getBean("productService");
@@ -26,47 +31,14 @@ public class CreateCartServlet extends HttpServlet {
         List<Product> products = productService.findAll();
         boolean isClientExist = false;
         PrintWriter out = resp.getWriter();
-        String page = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Create order</title>\n" +
-                "    <style type=\"text/css\">\n" +
-                "        .line {\n" +
-                "            float: left;\n" +
-                "            margin-left: 2px;\n" +
-                "            text-align: center;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<div id=\"container\">\n" +
-                "    <div id=\"tables\">\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkClient\" method=\"get\" action=\"/client\">\n" +
-                "                <input type=\"submit\" value=\"Client\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkProduct\" method=\"get\" action=\"/product\">\n" +
-                "                <input type=\"submit\" value=\"Product\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkCart\" method=\"get\" action=\"/cart\">\n" +
-                "                <input type=\"submit\" value=\"Cart\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</div>\n";
+        String page = TextHolder.TABLE_SELECTION;
         for (Client c : clients) {
             if (c.getId() == clientId) {
                 isClientExist = true;
             }
         }
         if(!isClientExist) {
-            page += "</body>\n" +
-                    "</html>";
+            page += TextHolder.END_OF_PAGE;
             out.println(page);
             out.println("</br>");
             out.println("</br>");
@@ -115,9 +87,7 @@ public class CreateCartServlet extends HttpServlet {
                 "    \tfunction createCart () {\n" +
                 "    \t\tdocument.getElementById('crCart').submit();\n" +
                 "    \t}\n" +
-                "    </script>\n" +
-                "</body>\n" +
-                "</html>";
+                "    </script>\n" + TextHolder.END_OF_PAGE;
         out.println(page);
     }
 }

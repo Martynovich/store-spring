@@ -3,6 +3,7 @@ package com.andersen.controllers;
 import com.andersen.domain.Cart;
 import com.andersen.domain.Product;
 import com.andersen.service.CartService;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -15,59 +16,29 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class FindCartServlet extends HttpServlet{
+
+    private static final Logger logger = Logger.getLogger(FindCartServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Start FindCartServlet doPost.");
         ApplicationContext context = new ClassPathXmlApplicationContext("store-spring.xml");
         CartService cartService = (CartService)context.getBean("cartService");
         PrintWriter out = resp.getWriter();
-        String page = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Clients</title>\n" +
-                "    <style type=\"text/css\">\n" +
-                "        .line {\n" +
-                "            float: left;\n" +
-                "            margin-left: 2px;\n" +
-                "            text-align: center;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "    <div id=\"tables\">\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkClient\" method=\"get\" action=\"/client\">\n" +
-                "                <input type=\"submit\" value=\"Client\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkProduct\" method=\"get\" action=\"/product\">\n" +
-                "                <input type=\"submit\" value=\"Product\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkCart\" method=\"get\" action=\"/cart\">\n" +
-                "                <input type=\"submit\" value=\"Cart\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "    </div>\n" +
-                "    </br>\n";
-        Integer cartId = null;
+        String page = TextHolder.TABLE_SELECTION + "</br>\n";
+        Integer cartId ;
         try {
             cartId = Integer.parseInt(req.getParameter("cartIdToFind"));
         } catch (Exception e) {
             page += "<p>Incorrect input. Please enter number.</p>";
-            page += "</body>\n" +
-                    "</html>";
+            page += TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
         Cart cart = cartService.findById(cartId);
         if (cart == null) {
             page += "<p>Cart with this id does not exist.</p>";
-            page += "</body>\n" +
-                    "</html>";
+            page += TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
@@ -79,8 +50,7 @@ public class FindCartServlet extends HttpServlet{
             page += "Product id - " + product.getId() + ", product login - " + product.getProductName()
                     + ", product price - " + product.getProdutPrice() + "</p>";
         }
-        page += "</body>\n" +
-                "</html>";
+        page += TextHolder.END_OF_PAGE;
         out.println(page);
     }
 }

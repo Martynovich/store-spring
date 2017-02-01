@@ -4,6 +4,7 @@ import com.andersen.domain.Cart;
 import com.andersen.domain.Product;
 import com.andersen.service.CartService;
 import com.andersen.service.ProductService;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,61 +17,29 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class UpdateCartServlet extends HttpServlet {
+
+    private static final Logger logger = Logger.getLogger(UpdateCartServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Start UpdateCartServlet doPost.");
         ApplicationContext context = new ClassPathXmlApplicationContext("store-spring.xml");
         CartService cartService = (CartService)context.getBean("cartService");
         ProductService productService = (ProductService)context.getBean("productService");
         List<Product> products = productService.findAll();
         Integer cartId;
         PrintWriter out = resp.getWriter();
-        String page = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Create order</title>\n" +
-                "    <style type=\"text/css\">\n" +
-                "        .line {\n" +
-                "            float: left;\n" +
-                "            margin-left: 2px;\n" +
-                "            text-align: center;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<div id=\"container\">\n" +
-                "    <div id=\"tables\">\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkClient\" method=\"get\" action=\"/client\">\n" +
-                "                <input type=\"submit\" value=\"Client\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkProduct\" method=\"get\" action=\"/product\">\n" +
-                "                <input type=\"submit\" value=\"Product\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "        <div class=\"line\">\n" +
-                "            <form name=\"checkCart\" method=\"get\" action=\"/cart\">\n" +
-                "                <input type=\"submit\" value=\"Cart\">\n" +
-                "            </form>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</div>\n";
+        String page = TextHolder.TABLE_SELECTION;
         try {
             cartId = Integer.parseInt(req.getParameter("cartIdToUpdate"));
         } catch (Exception e ) {
-            page += "</br><p>Incorrect input.Please enter number.</p>";
-            page +="</body>\n" +
-                    "</html>";
+            page += "</br><p>Incorrect input.Please enter number.</p>" + TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
         Cart cart = cartService.findById(cartId);
         if(cart == null) {
-            page += "</br><p>Cart with this id does not exist..</p>";
-            page +="</body>\n" +
-                    "</html>";
+            page += "</br><p>Cart with this id does not exist..</p>" + TextHolder.END_OF_PAGE;
             out.println(page);
             return;
         }
@@ -131,9 +100,7 @@ public class UpdateCartServlet extends HttpServlet {
                 "    \tfunction updateCart () {\n" +
                 "    \t\tdocument.getElementById('upCart').submit();\n" +
                 "    \t}\n" +
-                "    </script>\n" +
-                "</body>\n" +
-                "</html>";
+                "    </script>\n" + TextHolder.END_OF_PAGE;
         out.println(page);
     }
 }
